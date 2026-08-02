@@ -8,16 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-### Changed
-### Deprecated
-### Removed
-### Fixed
-### Security
 
-## [0.1.0] - YYYY-MM-DD
+- restic sidecar with cron built in and env-only configuration: scheduled,
+  encrypted, deduplicated backups with a retention policy, `once` and
+  `restore` modes, optional `--read-data-subset` verification and heartbeat.
 
-### Added
-- Initial release.
-
-[Unreleased]: https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/fabiocicerchia/s3-backup-sidecar/releases/tag/v0.1.0
+Not yet released.

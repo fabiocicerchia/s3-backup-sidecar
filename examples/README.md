@@ -1,6 +1,7 @@
 # Examples
 
-Runnable, self-contained examples. Each subfolder (or file) should run with a
-single command and show one clear use case.
+- [`basic/`](basic) — a scheduled backup against MinIO and the restore that
+  proves it, on a laptop, with no S3 account.
 
-- `basic/` — minimal end-to-end example.
+Every example here includes the restore. A backup example that stops at the
+backup is demonstrating the half that cannot fail quietly.

@@ -1,6 +1,9 @@
 # Documentation
 
-- [Architecture](architecture.md) — high-level design and components.
-- [Getting Started](getting-started.md) — setup and first run.
+- [Getting Started](getting-started.md) — a backup and a restore against
+  MinIO before you point it anywhere real, then the sidecar wiring.
+- [Architecture](architecture.md) — the ordering inside `backup.sh`, and why
+  each step is on the side of `forget --prune` that it is.
 
-Add pages here as the project grows (API reference, guides, ADRs).
+The [README](../README.md) has the full variable table. These pages cover
+running it, and knowing when it has stopped working.

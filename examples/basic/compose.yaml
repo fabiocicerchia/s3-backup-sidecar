@@ -1,0 +1,45 @@
+# A scheduled backup to a local MinIO, and a one-shot restore profile.
+#
+# MinIO stands in for S3 so the whole round trip runs on a laptop. Swapping
+# RESTIC_REPOSITORY for a real bucket URL and dropping the AWS_* variables
+# (IRSA / instance profile) is the only change needed for the real thing.
+x-restic: &restic
+  RESTIC_REPOSITORY: "s3:http://minio:9000/backups"
+  RESTIC_PASSWORD: "not-a-real-password"
+  AWS_ACCESS_KEY_ID: "test"
+  AWS_SECRET_ACCESS_KEY: "testtest123"
+
+services:
+  minio:
+    image: minio/minio
+    command: server /data
+    environment:
+      MINIO_ROOT_USER: "test"
+      MINIO_ROOT_PASSWORD: "testtest123"
+
+  backup:
+    image: fabiocicerchia/s3-backup-sidecar
+    environment:
+      <<: *restic
+      # Every minute, so the example finishes while you are watching it.
+      BACKUP_SCHEDULE: "* * * * *"
+      VERIFY: "true"
+    volumes:
+      # Read-only: restic only reads the source. A backup process with write
+      # access to the data it protects buys nothing.
+      - ./data:/data:ro
+    depends_on:
+      - minio
+
+  # Not started by `up`; run it explicitly with --profile restore.
+  restore:
+    image: fabiocicerchia/s3-backup-sidecar
+    command: ["restore"]
+    profiles: ["restore"]
+    environment:
+      <<: *restic
+      RESTORE_TARGET: "/restore"
+    volumes:
+      - ./restored:/restore
+    depends_on:
+      - minio

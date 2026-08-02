@@ -1,5 +1,7 @@
 site_name: s3-backup-sidecar
-site_description: One-line description.
+site_description: >-
+  A restic backup sidecar with cron built in and env-only config, tested
+  with a real backup-and-restore round trip.
 repo_url: https://github.com/fabiocicerchia/s3-backup-sidecar
 docs_dir: docs
 
