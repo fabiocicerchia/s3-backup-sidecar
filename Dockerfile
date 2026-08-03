@@ -4,7 +4,7 @@ ARG RESTIC_VERSION=0.18.0
 ARG RCLONE_VERSION=1.70.2
 ARG SUPERCRONIC_VERSION=0.2.33
 
-FROM alpine:3.22 AS fetch
+FROM alpine:3.24 AS fetch
 ARG RESTIC_VERSION
 ARG RCLONE_VERSION
 ARG SUPERCRONIC_VERSION
@@ -18,7 +18,7 @@ RUN curl -fsSLo /supercronic \
       "https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-${TARGETARCH}" \
  && chmod 0755 /supercronic
 
-FROM alpine:3.22
+FROM alpine:3.24
 LABEL org.opencontainers.image.title="s3-backup-sidecar" \
       org.opencontainers.image.description="restic/rclone backup sidecar with built-in cron, env-driven config" \
       org.opencontainers.image.licenses="Apache-2.0" \
