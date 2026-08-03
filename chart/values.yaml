@@ -1,0 +1,98 @@
+# The image runs its own scheduler (BACKUP_SCHEDULE), so this is a Deployment,
+# not a CronJob. Set kind: CronJob + cron.schedule if you would rather let
+# Kubernetes do the scheduling and run the backup once per invocation.
+kind: Deployment
+replicaCount: 1
+
+image:
+  repository: ghcr.io/fabiocicerchia/s3-backup-sidecar
+  tag: ""
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+command: []
+args: []
+
+env:
+  BACKUP_SCHEDULE: "0 2 * * *"
+  RESTORE_TARGET: /data
+envFrom: []          # - secretRef: {name: s3-backup-creds}  # AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / S3_BUCKET
+
+config:
+  mountPath: /etc/s3-backup-sidecar
+  files: {}
+
+cron:
+  schedule: "0 2 * * *"
+  suspend: false
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  restartPolicy: OnFailure
+  backoffLimit: 3
+
+service:
+  enabled: false
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  host: ""
+  path: /
+  pathType: Prefix
+  tls: []
+
+livenessProbe: {}
+readinessProbe: {}
+
+resources:
+  requests: {cpu: 50m, memory: 64Mi}
+  limits: {memory: 256Mi}
+
+# Point existingClaim at the volume you want backed up.
+persistence:
+  enabled: true
+  mountPath: /data
+  existingClaim: ""
+  size: 1Gi
+  storageClass: ""
+  accessModes: [ReadWriteOnce]
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+rbac:
+  create: false
+  clusterWide: true
+  rules:
+    - apiGroups: ["*"]
+      resources: ["*"]
+      verbs: ["get", "list", "watch"]
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: ["ALL"]}
+
+extraVolumes: []
+extraVolumeMounts: []
+
+podAnnotations: {}
+podLabels: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

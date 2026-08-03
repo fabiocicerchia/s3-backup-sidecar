@@ -1,0 +1,6 @@
+apiVersion: v2
+name: s3-backup-sidecar
+description: Helm chart for s3-backup-sidecar
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
