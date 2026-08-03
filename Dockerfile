@@ -21,8 +21,8 @@ RUN curl -fsSLo /supercronic \
 FROM alpine:3.22
 LABEL org.opencontainers.image.title="s3-backup-sidecar" \
       org.opencontainers.image.description="restic/rclone backup sidecar with built-in cron, env-driven config" \
-      org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.source="https://github.com/fabiocicerchia/freelancing"
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.source="https://github.com/fabiocicerchia/s3-backup-sidecar"
 RUN apk add --no-cache ca-certificates tini tzdata curl \
  && adduser -D -u 10001 backup
 COPY --from=fetch /restic /rclone /supercronic /usr/local/bin/
