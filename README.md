@@ -49,4 +49,5 @@ full backup → restore → content-verify round-trip.
 
 ## License
 
-Apache-2.0 — see [LICENSE](LICENSE).
+Apache-2.0 — see [LICENSE](LICENSE). The image redistributes restic
+(BSD-2-Clause), rclone, supercronic and tini (MIT); see [NOTICE](NOTICE).

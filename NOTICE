@@ -3,3 +3,14 @@ Copyright 2026 Fabio Cicerchia
 
 This product includes software developed by
 Fabio Cicerchia (https://github.com/fabiocicerchia).
+
+The published container image redistributes the following third-party
+binaries, each under its own license:
+
+  restic       BSD-2-Clause  https://github.com/restic/restic
+  rclone       MIT           https://github.com/rclone/rclone
+  supercronic  MIT           https://github.com/aptible/supercronic
+  tini         MIT           https://github.com/krallin/tini
+
+The base image is Alpine Linux; its packages carry their own licenses
+(musl MIT, busybox GPL-2.0).
