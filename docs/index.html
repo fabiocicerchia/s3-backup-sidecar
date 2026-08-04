@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>s3-backup-sidecar — restic backup sidecar with cron built in, configured entirely by env vars.</title>
+<meta name="description" content="Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 or anything restic/rclone speaks. Tested with a real backup-and-restore round-trip against MinIO.">
+<style>
+:root{--accent:#38bdf8;--accent2:#0284c7}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2.5rem 1.5rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:linear-gradient(160deg,#080e18,#0e1726 60%,#132033);color:#e9f1fa}
+.card{max-width:700px;width:100%}
+h1{font-size:2.5rem;margin:0 0 .35rem;line-height:1.15;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;
+  background-clip:text;color:transparent;display:inline-block}
+.tagline{font-size:1.15rem;color:#c2d3e4;margin:0 0 1.4rem;font-weight:500}
+p.desc{color:#a4b6c9;line-height:1.65;margin:0 0 1.8rem}
+.install-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--accent2);margin:0 0 .5rem;font-weight:700}
+pre{background:#07101c;border:1px solid #23384f;border-radius:10px;padding:1rem 1.2rem;
+  overflow-x:auto;font-size:.9rem;margin:0 0 .6rem}
+code{color:#8bd4e9;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.alt{color:#5f7791;font-size:.85rem;margin:0 0 1.8rem}
+.alt code{color:#8ba0b7;background:rgba(255,255,255,.05);padding:.1rem .35rem;border-radius:4px}
+.badges{margin:0 0 1.6rem;display:flex;flex-wrap:wrap;gap:1.1rem;color:#7a91a8;font-size:.85rem}
+.badges span{display:flex;align-items:center;gap:.4rem}
+.links{margin-top:1.6rem;display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+a.btn{color:#080e18;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  padding:.65rem 1.3rem;border-radius:8px;text-decoration:none;font-weight:700}
+a.plain{color:var(--accent2);text-decoration:none;font-weight:600}
+footer{margin-top:2.2rem;color:#4d6480;font-size:.82rem}
+@media (prefers-color-scheme: light){
+  body{background:linear-gradient(160deg,#f5f9ff,#eaf2fb 60%,#e3eefa);color:#0d1f33}
+  .tagline{color:#36506b} p.desc{color:#4a6480}
+  pre{background:#fff;border-color:#cfe0f0} code{color:#0a5f7a}
+  .alt{color:#6f8aa4} .alt code{background:rgba(0,0,0,.05);color:#4a6480}
+  .badges{color:#4a6480}
+  footer{color:#6f8aa4} a.btn{color:#fff}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🗄️ s3-backup-sidecar</h1>
+  <p class="tagline">A restic backup sidecar with cron built in and 100% env-driven config.</p>
+  <p class="desc">Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 — or anything restic and rclone speak. Everyone reinvents this container; this one is tested with a real backup → restore → content-verify round-trip against MinIO.</p>
+  <div class="install-label">Run</div>
+  <pre><code>docker run -d \
+  -e RESTIC_REPOSITORY=s3:s3.amazonaws.com/my-bucket/my-app \
+  -e RESTIC_PASSWORD=hunter2 \
+  -e BACKUP_SCHEDULE="0 3 * * *" \
+  -v /srv/data:/data:ro \
+  fabiocicerchia/s3-backup-sidecar</code></pre>
+  <p class="alt">one-shot: <code>args: ["once"]</code> · disaster recovery: <code>args: ["restore"]</code> · Helm chart included</p>
+  <div class="badges">
+    <span>🔐 encrypted &amp; deduplicated</span>
+    <span>⏱️ built-in cron</span>
+    <span>♻️ retention policy</span>
+    <span>🫀 heartbeat ping</span>
+  </div>
+  <div class="links">
+    <a class="btn" href="https://github.com/fabiocicerchia/s3-backup-sidecar">GitHub →</a>
+    <a class="plain" href="https://github.com/fabiocicerchia/s3-backup-sidecar#readme">Full docs</a>
+  </div>
+  <footer>Apache 2.0 · Fabio Cicerchia</footer>
+</div>
+</body>
+</html>
