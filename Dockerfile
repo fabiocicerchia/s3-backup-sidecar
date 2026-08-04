@@ -25,6 +25,7 @@ LABEL org.opencontainers.image.title="s3-backup-sidecar" \
       org.opencontainers.image.source="https://github.com/fabiocicerchia/s3-backup-sidecar"
 RUN apk add --no-cache ca-certificates tini tzdata curl \
  && adduser -D -u 10001 backup
+COPY NOTICE /NOTICE
 COPY --from=fetch /restic /rclone /supercronic /usr/local/bin/
 COPY backup.sh entrypoint.sh /usr/local/bin/
 USER 10001
