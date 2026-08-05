@@ -5,6 +5,20 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.0 (2026-08-05)
+
+
+### Features
+
+* **chart:** add Helm chart ([cd0abcd](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/cd0abcd44468ce7dae5d1590bd8fd187d1935cf8))
+
+
+### Bug Fixes
+
+* **ci:** stop security workflows failing on private repos ([#9](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/9)) ([6e01589](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/6e015890b76b5b6b399b945396f71401c5ca84fe))
+* **docker:** set pipefail before RUN steps that pipe curl into tar ([7e5514c](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/7e5514cde3932d83e049c59d91cb4d6be33e5d92))
+* **pre-commit:** stop check-yaml failing on Helm templates and multi-doc manifests ([a829bd1](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/a829bd1e9940527efb62034a36a3052ccbe26ada))
+
 ## [Unreleased]
 
 ### Added
