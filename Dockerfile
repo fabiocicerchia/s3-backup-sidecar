@@ -9,6 +9,10 @@ ARG RESTIC_VERSION
 ARG RCLONE_VERSION
 ARG SUPERCRONIC_VERSION
 ARG TARGETARCH=amd64
+# `curl … | bzcat > /restic` below: without pipefail a failed download still
+# succeeds and writes an empty binary, so the image ships a restic that cannot
+# run and the failure only surfaces at backup time.
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 RUN apk add --no-cache curl ca-certificates bzip2 unzip
 RUN curl -fsSL "https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/restic_${RESTIC_VERSION}_linux_${TARGETARCH}.bz2" \
       | bzcat > /restic && chmod 0755 /restic
