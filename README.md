@@ -1,5 +1,11 @@
 # s3-backup-sidecar
 
+[![CI](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/ci.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/ci.yml)
+[![Code Quality](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/code-quality.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/code-quality.yml)
+[![Security](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/security.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/security.yml)
+[![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/fabiocicerchia/s3-backup-sidecar/badge)](https://securityscorecards.dev/viewer/?uri=github.com/fabiocicerchia/s3-backup-sidecar)
+
 A **restic**-based backup sidecar with cron built in and 100% env-driven
 config. Mount your data volume, set four env vars, get scheduled, encrypted,
 deduplicated, retention-managed backups to S3 (or anything restic/rclone
@@ -7,6 +13,13 @@ speaks). `rclone` is included for non-restic sync jobs and exotic remotes.
 
 Everyone reinvents this container; this one is tested with a real
 backup-and-restore round-trip against MinIO.
+
+## Install
+
+```sh
+make build                       # builds fabiocicerchia/s3-backup-sidecar:0.1.0 locally
+docker pull fabiocicerchia/s3-backup-sidecar:0.1.0
+```
 
 ## Usage
 
@@ -46,6 +59,10 @@ Disaster recovery: `args: ["restore"]` with `RESTORE_TARGET=/data`.
 
 `make build` / `make lint` / `make test` — the test spins up MinIO and does a
 full backup → restore → content-verify round-trip.
+
+## Documentation
+
+Full docs live in [`docs/`](docs/). Runnable examples live in [`examples/`](examples/).
 
 ## License
 
