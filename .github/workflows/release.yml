@@ -15,9 +15,27 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
     steps:
       - uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071  # v4.4.1
+        id: rp
         with:
           # "simple" is language-agnostic (tracks version.txt + CHANGELOG).
           # Swap for node/python/rust/etc. to also bump manifests.
           release-type: simple
+
+  # Building the image has to hang off this job rather than off the release
+  # event: the release release-please publishes carries GITHUB_TOKEN, and
+  # GitHub does not start workflows from GITHUB_TOKEN events. Called in the
+  # same run, it just works — no PAT to mint, rotate, or leak.
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/publish.yml
+    with:
+      tag: ${{ needs.release-please.outputs.tag_name }}

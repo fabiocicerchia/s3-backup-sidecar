@@ -17,8 +17,8 @@ backup-and-restore round-trip against MinIO.
 ## Install
 
 ```sh
-make build                       # builds fabiocicerchia/s3-backup-sidecar:0.1.0 locally
-docker pull fabiocicerchia/s3-backup-sidecar:0.1.0
+make build                       # builds ghcr.io/fabiocicerchia/s3-backup-sidecar:1.0.0 locally
+docker pull ghcr.io/fabiocicerchia/s3-backup-sidecar:1.0.0
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ containers:
   - name: app
     volumeMounts: [{ name: data, mountPath: /data }]
   - name: backup
-    image: fabiocicerchia/s3-backup-sidecar
+    image: ghcr.io/fabiocicerchia/s3-backup-sidecar
     env:
       - { name: RESTIC_REPOSITORY, value: "s3:s3.amazonaws.com/my-bucket/my-app" }
       - { name: BACKUP_SCHEDULE,   value: "0 3 * * *" }
