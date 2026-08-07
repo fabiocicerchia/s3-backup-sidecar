@@ -5,6 +5,7 @@
 [![Security](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/security.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/security.yml)
 [![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/fabiocicerchia/s3-backup-sidecar/badge)](https://securityscorecards.dev/viewer/?uri=github.com/fabiocicerchia/s3-backup-sidecar)
+[![CI carbon](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/fabiocicerchia/s3-backup-sidecar/gh-pages/badge.json)](.github/workflows/carbon-badge.yml)
 
 A **restic**-based backup sidecar with cron built in and 100% env-driven
 config. Mount your data volume, set four env vars, get scheduled, encrypted,
