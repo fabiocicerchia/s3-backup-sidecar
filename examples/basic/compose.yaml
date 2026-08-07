@@ -16,9 +16,16 @@ services:
     environment:
       MINIO_ROOT_USER: "test"
       MINIO_ROOT_PASSWORD: "testtest123"
+    # Bounded so the example is copy-pasteable into somewhere real. An
+    # unbounded container is scheduled without guardrails and pushes nodes
+    # towards over-provisioning.
+    mem_limit: 256m
+    cpus: 0.5
 
   backup:
     image: fabiocicerchia/s3-backup-sidecar
+    mem_limit: 256m
+    cpus: 0.5
     environment:
       <<: *restic
       # Every minute, so the example finishes while you are watching it.
