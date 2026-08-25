@@ -5,20 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>s3-backup-sidecar — restic backup sidecar with cron built in, configured entirely by env vars.</title>
 <meta name="description" content="Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 or anything restic/rclone speaks. Tested with a real backup-and-restore round-trip against MinIO.">
+<!-- The palette lives in the docs theme, so the splash and /docs/ cannot drift
+     apart. The path is relative to the *deployed* layout: splash at /, rendered
+     docs at /docs/. -->
+<link rel="stylesheet" href="docs/stylesheets/extra.css">
 <style>
-:root{--accent:#38bdf8;--accent2:#0284c7}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2.5rem 1.5rem;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   background:linear-gradient(160deg,#080e18,#0e1726 60%,#132033);color:#e9f1fa}
 .card{max-width:700px;width:100%}
 h1{font-size:2.5rem;margin:0 0 .35rem;line-height:1.15;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;
   background-clip:text;color:transparent;display:inline-block}
 .tagline{font-size:1.15rem;color:#c2d3e4;margin:0 0 1.4rem;font-weight:500}
 p.desc{color:#a4b6c9;line-height:1.65;margin:0 0 1.8rem}
 .install-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;
-  color:var(--accent2);margin:0 0 .5rem;font-weight:700}
+  color:var(--accent-2);margin:0 0 .5rem;font-weight:700}
 pre{background:#07101c;border:1px solid #23384f;border-radius:10px;padding:1rem 1.2rem;
   overflow-x:auto;font-size:.9rem;margin:0 0 .6rem}
 code{color:#8bd4e9;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
@@ -27,9 +30,9 @@ code{color:#8bd4e9;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monosp
 .badges{margin:0 0 1.6rem;display:flex;flex-wrap:wrap;gap:1.1rem;color:#7a91a8;font-size:.85rem}
 .badges span{display:flex;align-items:center;gap:.4rem}
 .links{margin-top:1.6rem;display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
-a.btn{color:#080e18;background:linear-gradient(90deg,var(--accent),var(--accent2));
+a.btn{color:#080e18;background:linear-gradient(90deg,var(--accent),var(--accent-2));
   padding:.65rem 1.3rem;border-radius:8px;text-decoration:none;font-weight:700}
-a.plain{color:var(--accent2);text-decoration:none;font-weight:600}
+a.plain{color:var(--accent-2);text-decoration:none;font-weight:600}
 footer{margin-top:2.2rem;color:#4d6480;font-size:.82rem}
 @media (prefers-color-scheme: light){
   body{background:linear-gradient(160deg,#f5f9ff,#eaf2fb 60%,#e3eefa);color:#0d1f33}
@@ -62,7 +65,7 @@ footer{margin-top:2.2rem;color:#4d6480;font-size:.82rem}
   </div>
   <div class="links">
     <a class="btn" href="https://github.com/fabiocicerchia/s3-backup-sidecar">GitHub →</a>
-    <a class="plain" href="https://github.com/fabiocicerchia/s3-backup-sidecar#readme">Full docs</a>
+    <a class="plain" href="docs/">Full docs</a>
   </div>
   <footer>Apache 2.0 · Fabio Cicerchia</footer>
 </div>
