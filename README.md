@@ -45,16 +45,16 @@ Disaster recovery: `args: ["restore"]` with `RESTORE_TARGET=/data`.
 
 ## Configuration
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `RESTIC_REPOSITORY` | *required* | restic repo URL |
-| `RESTIC_PASSWORD(_FILE)` | *required* | repo encryption key |
-| `BACKUP_SCHEDULE` | `0 3 * * *` | cron schedule |
-| `BACKUP_PATHS` | `/data` | space-separated paths |
-| `RETENTION_ARGS` | `--keep-daily 7 --keep-weekly 4 --keep-monthly 6` | forget policy |
-| `VERIFY` | `false` | `restic check --read-data-subset=5%` after each run |
-| `PRE_COMMAND` | – | e.g. `pg_dump ... > /data/dump.sql` |
-| `HEARTBEAT_URL` | – | pinged on success (healthchecks.io) |
+| Variable                 | Default                                           | Purpose                                             |
+| ------------------------ | ------------------------------------------------- | --------------------------------------------------- |
+| `RESTIC_REPOSITORY`      | *required*                                        | restic repo URL                                     |
+| `RESTIC_PASSWORD(_FILE)` | *required*                                        | repo encryption key                                 |
+| `BACKUP_SCHEDULE`        | `0 3 * * *`                                       | cron schedule                                       |
+| `BACKUP_PATHS`           | `/data`                                           | space-separated paths                               |
+| `RETENTION_ARGS`         | `--keep-daily 7 --keep-weekly 4 --keep-monthly 6` | forget policy                                       |
+| `VERIFY`                 | `false`                                           | `restic check --read-data-subset=5%` after each run |
+| `PRE_COMMAND`            | –                                                 | e.g. `pg_dump ... > /data/dump.sql`                 |
+| `HEARTBEAT_URL`          | –                                                 | pinged on success (healthchecks.io)                 |
 
 ## Development
 
