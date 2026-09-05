@@ -46,11 +46,11 @@ cat restored/data/file.txt      # precious
 
 ## The three modes
 
-| Argument | What it does | Use it for |
-|---|---|---|
-| *(none)* | Runs `backup.sh` on `BACKUP_SCHEDULE` via supercronic | A sidecar container |
-| `once` | One backup, then exit 0 | A Kubernetes `CronJob`, or CI |
-| `restore` | `restic restore latest` into `RESTORE_TARGET` | Disaster recovery |
+| Argument  | What it does                                          | Use it for                    |
+| --------- | ----------------------------------------------------- | ----------------------------- |
+| *(none)*  | Runs `backup.sh` on `BACKUP_SCHEDULE` via supercronic | A sidecar container           |
+| `once`    | One backup, then exit 0                               | A Kubernetes `CronJob`, or CI |
+| `restore` | `restic restore latest` into `RESTORE_TARGET`         | Disaster recovery             |
 
 Anything else is `exec`d, so `docker run ... restic snapshots` works for
 inspection.
