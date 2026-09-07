@@ -4,7 +4,7 @@ Three static binaries and two shell scripts. The scripts are short on purpose:
 a backup you cannot read in full is a backup you are trusting rather than
 running.
 
-```
+```text
 entrypoint.sh  ── cron    ──► supercronic ──► backup.sh, on BACKUP_SCHEDULE
                ── once    ──► backup.sh, once, then exit      (CronJob / CI)
                ── restore ──► restic restore latest --target $RESTORE_TARGET
