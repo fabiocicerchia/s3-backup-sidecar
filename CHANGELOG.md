@@ -5,6 +5,18 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.1.2...v1.2.0) (2026-09-08)
+
+
+### Features
+
+* add the eight-verb repo contract ([#49](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/49)) ([1a41f9b](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/1a41f9bb67e87cded37a57dbf55c8a3dad417746))
+
+
+### Bug Fixes
+
+* point install docs at an image tag that exists ([#52](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/52)) ([afd7ad2](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/afd7ad2547a2e02699e83eb2011c0043c89b5652))
+
 ## [1.1.2](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.1.1...v1.1.2) (2026-09-04)
 
 ### Bug Fixes
