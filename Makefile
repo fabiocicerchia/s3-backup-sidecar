@@ -1,5 +1,5 @@
 IMAGE     ?= ghcr.io/fabiocicerchia/s3-backup-sidecar
-VERSION   ?= 1.0.0
+VERSION   ?= $(shell cat version.txt)
 PLATFORMS ?= linux/amd64,linux/arm64
 
 # Every verb this repository exposes lives here; `make` on its own prints them.

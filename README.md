@@ -18,8 +18,8 @@ backup-and-restore round-trip against MinIO.
 ## Install
 
 ```sh
-make build                       # builds ghcr.io/fabiocicerchia/s3-backup-sidecar:1.0.0 locally
-docker pull ghcr.io/fabiocicerchia/s3-backup-sidecar:1.0.0
+make build                       # builds the image locally, tagged from version.txt
+docker pull ghcr.io/fabiocicerchia/s3-backup-sidecar:latest      # or pin a release: :1.1.2
 ```
 
 ## Usage
