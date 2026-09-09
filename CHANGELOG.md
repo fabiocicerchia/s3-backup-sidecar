@@ -5,6 +5,13 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.2.0...v1.2.1) (2026-09-09)
+
+
+### Bug Fixes
+
+* honour RUN_ONCE, and open the repository at startup ([#53](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/53)) ([d96ac43](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/d96ac434cbdc0bb5737706410e127e553c7c2573))
+
 ## [1.2.0](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.1.2...v1.2.0) (2026-09-08)
 
 
