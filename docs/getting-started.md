@@ -55,6 +55,17 @@ cat restored/data/file.txt      # precious
 Anything else is `exec`d, so `docker run ... restic snapshots` works for
 inspection.
 
+`RUN_ONCE=true` selects `once` without passing an argument, for callers that
+configure the image entirely through the environment.
+
+In cron mode the repository is opened — and created if it does not exist — at
+**startup**, and the container exits non-zero if that fails. A repository the
+sidecar cannot write is a container that will fail every scheduled run while
+looking perfectly healthy; a crash loop is the honest version of that. The
+usual cause is a local path on a volume created root-owned: the image runs as
+uid 10001, so `chown` it, run with a matching `--user`, or set
+`fsGroup: 10001`.
+
 ## As a sidecar
 
 ```yaml

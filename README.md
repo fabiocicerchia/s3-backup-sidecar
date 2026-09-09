@@ -40,8 +40,14 @@ containers:
     volumeMounts: [{ name: data, mountPath: /data, readOnly: true }]
 ```
 
-One-shot (Kubernetes CronJob / CI): `args: ["once"]`.
-Disaster recovery: `args: ["restore"]` with `RESTORE_TARGET=/data`.
+One-shot (Kubernetes CronJob / CI): `args: ["once"]`, or `RUN_ONCE=true` where
+passing an argument is awkward. Disaster recovery: `args: ["restore"]` with
+`RESTORE_TARGET=/data`.
+
+The repository has to be reachable **and writable** by uid 10001. In cron mode
+that is checked at startup rather than on the first tick: a root-owned named
+volume otherwise fails every scheduled run while the container sits there
+looking healthy.
 
 ## Configuration
 
@@ -50,6 +56,7 @@ Disaster recovery: `args: ["restore"]` with `RESTORE_TARGET=/data`.
 | `RESTIC_REPOSITORY`      | *required*                                        | restic repo URL                                     |
 | `RESTIC_PASSWORD(_FILE)` | *required*                                        | repo encryption key                                 |
 | `BACKUP_SCHEDULE`        | `0 3 * * *`                                       | cron schedule                                       |
+| `RUN_ONCE`               | `false`                                           | `true` = one backup, then exit (same as `once`)     |
 | `BACKUP_PATHS`           | `/data`                                           | space-separated paths                               |
 | `RETENTION_ARGS`         | `--keep-daily 7 --keep-weekly 4 --keep-monthly 6` | forget policy                                       |
 | `VERIFY`                 | `false`                                           | `restic check --read-data-subset=5%` after each run |

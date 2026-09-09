@@ -5,8 +5,10 @@ a backup you cannot read in full is a backup you are trusting rather than
 running.
 
 ```text
-entrypoint.sh  ── cron    ──► supercronic ──► backup.sh, on BACKUP_SCHEDULE
+entrypoint.sh  ── cron    ──► open/init the repo, then
+                              supercronic ──► backup.sh, on BACKUP_SCHEDULE
                ── once    ──► backup.sh, once, then exit      (CronJob / CI)
+                              (RUN_ONCE=true selects this too)
                ── restore ──► restic restore latest --target $RESTORE_TARGET
                ── *       ──► exec "$@"                        (debugging)
 
