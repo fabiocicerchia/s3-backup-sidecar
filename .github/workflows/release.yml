@@ -41,3 +41,9 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       tag: ${{ needs.release-please.outputs.tag_name }}
+    # A called workflow sees no secrets unless they are handed over. Named
+    # rather than `secrets: inherit`, so it gets the Docker Hub pair and
+    # nothing else this repository happens to hold.
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
