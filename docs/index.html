@@ -48,7 +48,11 @@ footer{margin-top:2.2rem;color:#4d6480;font-size:.82rem}
 <div class="card">
   <h1>🗄️ s3-backup-sidecar</h1>
   <p class="tagline">A restic backup sidecar with cron built in and 100% env-driven config.</p>
-  <p class="desc">Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 — or anything restic and rclone speak. Everyone reinvents this container; this one is tested with a real backup → restore → content-verify round-trip against MinIO.</p>
+  <p class="desc">
+    Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 —
+    or anything restic and rclone speak. Everyone reinvents this container; this one is tested with a real backup →
+    restore → content-verify round-trip against MinIO.
+  </p>
   <div class="install-label">Run</div>
   <pre><code>docker run -d \
   -e RESTIC_REPOSITORY=s3:s3.amazonaws.com/my-bucket/my-app \
@@ -56,7 +60,9 @@ footer{margin-top:2.2rem;color:#4d6480;font-size:.82rem}
   -e BACKUP_SCHEDULE="0 3 * * *" \
   -v /srv/data:/data:ro \
   fabiocicerchia/s3-backup-sidecar</code></pre>
-  <p class="alt">one-shot: <code>args: ["once"]</code> · disaster recovery: <code>args: ["restore"]</code> · Helm chart included</p>
+  <p class="alt">
+    one-shot: <code>args: ["once"]</code> · disaster recovery: <code>args: ["restore"]</code> · Helm chart included
+  </p>
   <div class="badges">
     <span>🔐 encrypted &amp; deduplicated</span>
     <span>⏱️ built-in cron</span>
