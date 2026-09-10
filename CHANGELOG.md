@@ -5,6 +5,16 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.2.1...v1.2.2) (2026-09-10)
+
+
+### Bug Fixes
+
+* **publish:** sign the images this workflow pushes ([#60](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/60)) ([a850135](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/a850135e2ca2784ebbaf687984fbb7d5e449a3c5))
+* **release:** grant id-token on the job that calls the signing workflow ([#61](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/61)) ([9befc66](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/9befc664416ce6b0b284be3cc45a78ad8ffafc23))
+* **release:** grant id-token to the job that calls publish ([#63](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/63)) ([3693aa1](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/3693aa127148432f926b1bfa794e51f0ec6e3d34))
+* **release:** hand the Docker Hub secrets to the called workflow ([#57](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/57)) ([964eaf5](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/964eaf50ba6a7cc43d1462c2ccccb4a052c01d46))
+
 ## [1.2.1](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.2.0...v1.2.1) (2026-09-09)
 
 
