@@ -46,6 +46,14 @@ jobs:
     permissions:
       contents: read
       packages: write
+      # A called workflow's token is capped by what the caller grants, and a
+      # scope missing from this block is `none` however the called workflow
+      # declares it. Without this, publish.yml pushes the image and only then
+      # fails at `cosign sign` with no OIDC token — an unsigned image and a red
+      # release, on the path that actually runs. The `release` and
+      # `workflow_dispatch` triggers hit that file directly and were fine,
+      # which is what made this look tested.
+      id-token: write
     uses: ./.github/workflows/publish.yml
     with:
       tag: ${{ needs.release-please.outputs.tag_name }}
