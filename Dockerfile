@@ -32,5 +32,12 @@ RUN apk add --no-cache ca-certificates tini tzdata curl \
 COPY NOTICE /NOTICE
 COPY --from=fetch /restic /rclone /supercronic /usr/local/bin/
 COPY backup.sh entrypoint.sh /usr/local/bin/
+# /backups exists in the image, owned by the user that will write to it. Docker
+# seeds an empty named volume from the image's directory at the mount point —
+# ownership included — so `-v backups:/backups` arrives writable instead of
+# root-owned, which is the documented usage and used to fail on `restic init`
+# with EACCES. A bind mount keeps the host's ownership and is unaffected; the
+# startup check below still catches that case and says what to do about it.
+RUN mkdir -p /backups && chown 10001:10001 /backups
 USER 10001
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/entrypoint.sh"]

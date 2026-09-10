@@ -44,10 +44,15 @@ One-shot (Kubernetes CronJob / CI): `args: ["once"]`, or `RUN_ONCE=true` where
 passing an argument is awkward. Disaster recovery: `args: ["restore"]` with
 `RESTORE_TARGET=/data`.
 
-The repository has to be reachable **and writable** by uid 10001. In cron mode
-that is checked at startup rather than on the first tick: a root-owned named
-volume otherwise fails every scheduled run while the container sits there
+The repository has to be reachable **and writable** by uid 10001, and in cron
+mode that is checked at startup rather than on the first tick — a repository
+this container cannot write is a crash loop, not a container that sits there
 looking healthy.
+
+A **named volume needs nothing**: the image carries `/backups` owned by 10001,
+and Docker seeds an empty volume from the image's directory at the mount point,
+ownership included. A **bind mount** keeps its host ownership, so point it at a
+directory that uid can write, or run with `--user`.
 
 ## Configuration
 
