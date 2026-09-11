@@ -52,5 +52,16 @@ if $GUARD docker run --rm -e RESTIC_REPOSITORY=/nonexistent/nowhere \
   fail "cron mode scheduled backups against an unusable repository"
 fi
 
+# A brand-new named volume is the documented sidecar usage, and it used to fail
+# on `restic init` with EACCES because Docker creates the volume root-owned.
+# The image now carries /backups owned by 10001, which an empty volume inherits.
+vol="s3bk-test-vol-$$"
+docker volume create "$vol" >/dev/null
+# shellcheck disable=SC2086
+$GUARD docker run --rm -e RESTIC_REPOSITORY=/backups/probe -e RESTIC_PASSWORD=secret \
+  -e BACKUP_PATHS=/etc/hostname -e RUN_ONCE=true -v "$vol:/backups" "$IMAGE" >/dev/null \
+  || { docker volume rm -f "$vol" >/dev/null 2>&1; fail "a fresh named volume is not writable by uid 10001"; }
+docker volume rm -f "$vol" >/dev/null 2>&1
+
 cleanup
 echo PASS
