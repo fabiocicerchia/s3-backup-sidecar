@@ -5,6 +5,14 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.2.2...v1.2.3) (2026-09-11)
+
+
+### Bug Fixes
+
+* make a fresh named volume writable, not just legible ([#64](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/64)) ([753f851](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/753f8515745ab07c32fa4017311693e31ddac23a))
+* **release:** let the release PR carry a token that isn't GITHUB_TOKEN ([#66](https://github.com/fabiocicerchia/s3-backup-sidecar/issues/66)) ([58a475c](https://github.com/fabiocicerchia/s3-backup-sidecar/commit/58a475c324493db51310531c3d61ed2d594e879e))
+
 ## [1.2.2](https://github.com/fabiocicerchia/s3-backup-sidecar/compare/v1.2.1...v1.2.2) (2026-09-10)
 
 
