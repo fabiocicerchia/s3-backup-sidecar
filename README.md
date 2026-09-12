@@ -15,6 +15,31 @@ speaks). `rclone` is included for non-restic sync jobs and exotic remotes.
 Everyone reinvents this container; this one is tested with a real
 backup-and-restore round-trip against MinIO.
 
+## Features
+
+- **restic** with cron built in and 100% env-driven config: mount the volume,
+  set four variables, get scheduled, encrypted, deduplicated backups.
+- Retention managed by policy (`RETENTION_ARGS`), defaulting to 7 daily,
+  4 weekly, 6 monthly.
+- Targets S3 or anything restic speaks; `rclone` is bundled for non-restic
+  sync jobs and exotic remotes.
+- Three modes from one image: cron sidecar, one-shot (`once` or `RUN_ONCE`)
+  for a CronJob or CI, and `restore` with `RESTORE_TARGET` for the day it
+  matters.
+- `PRE_COMMAND` runs before the backup, for the `pg_dump` that has to happen
+  first.
+- `VERIFY` runs `restic check --read-data-subset=5%` after each run, and
+  `HEARTBEAT_URL` is pinged on success for dead-man-switch alerting.
+- **Fails loudly, early**: in cron mode the repository is checked for
+  reachability and write access at startup, not on the first tick — a repo it
+  cannot write is a crash loop, not a container that sits there looking
+  healthy.
+- Documented ownership behaviour: a named volume needs nothing because the
+  image carries `/backups` owned by uid 10001; a bind mount keeps host
+  ownership, so point it somewhere that uid can write.
+- Proven by a real **backup → restore → content-verify round-trip** against
+  MinIO in `make test`, not just a smoke test.
+
 ## Install
 
 ```sh
