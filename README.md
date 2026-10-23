@@ -13,7 +13,7 @@ deduplicated, retention-managed backups to S3 (or anything restic/rclone
 speaks). `rclone` is included for non-restic sync jobs and exotic remotes.
 
 Everyone reinvents this container; this one is tested with a real
-backup-and-restore round-trip against MinIO.
+backup-and-restore round-trip against RustFS.
 
 ## Features
 
@@ -38,7 +38,7 @@ backup-and-restore round-trip against MinIO.
   image carries `/backups` owned by uid 10001; a bind mount keeps host
   ownership, so point it somewhere that uid can write.
 - Proven by a real **backup → restore → content-verify round-trip** against
-  MinIO in `make test`, not just a smoke test.
+  RustFS in `make test`, not just a smoke test.
 
 ## Install
 
@@ -95,7 +95,7 @@ directory that uid can write, or run with `--user`.
 
 ## Development
 
-`make test` spins up MinIO and does a full backup → restore → content-verify
+`make test` spins up RustFS and does a full backup → restore → content-verify
 round-trip.
 
 ### Make targets

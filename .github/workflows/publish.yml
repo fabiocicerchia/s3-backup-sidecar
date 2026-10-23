@@ -94,7 +94,7 @@ jobs:
           push: false
           tags: ${{ env.IMAGE }}:ci-test
 
-      # A full backup -> restore -> content-verify round trip against MinIO.
+      # A full backup -> restore -> content-verify round trip against RustFS.
       # It pulls an image and takes a couple of minutes; a backup tool tested
       # only on the write path is untested.
       - name: Smoke test

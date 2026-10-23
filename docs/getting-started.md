@@ -2,19 +2,30 @@
 
 ## Prerequisites
 
-Docker, and somewhere restic can write: an S3 bucket, or MinIO locally. Four
+Docker, and somewhere restic can write: an S3 bucket, or a local S3-compatible server such as RustFS. Four
 variables are the whole configuration.
 
-## Try it against MinIO first
+## Try it against RustFS first
 
 Do not point a new backup configuration at a real bucket to find out whether it
 works. Run it locally, then restore, then move it:
 
 ```sh
 docker network create bk
-docker run -d --rm --name minio --network bk \
-  -e MINIO_ROOT_USER=test -e MINIO_ROOT_PASSWORD=testtest123 \
-  minio/minio server /data
+docker run -d --rm --name rustfs --network bk \
+  -e RUSTFS_ACCESS_KEY=test -e RUSTFS_SECRET_KEY=testtest123 \
+  rustfs/rustfs:1.0.3@sha256:9ca9559533b537d10482fe923288b676ad08f92a7069d9a17327fbae3cab688b /data
+```
+
+Create the repository. A real bucket already exists; this one does not, and
+restic retries a missing bucket for about 14 minutes before creating it:
+
+```sh
+docker run --rm --network bk --entrypoint restic \
+  -e RESTIC_REPOSITORY=s3:http://rustfs:9000/backups \
+  -e RESTIC_PASSWORD=secret \
+  -e AWS_ACCESS_KEY_ID=test -e AWS_SECRET_ACCESS_KEY=testtest123 \
+  fabiocicerchia/s3-backup-sidecar init
 ```
 
 Back something up:
@@ -23,7 +34,7 @@ Back something up:
 mkdir -p data && echo "precious" > data/file.txt
 
 docker run --rm --network bk -v "$PWD/data:/data:ro" \
-  -e RESTIC_REPOSITORY=s3:http://minio:9000/backups \
+  -e RESTIC_REPOSITORY=s3:http://rustfs:9000/backups \
   -e RESTIC_PASSWORD=secret \
   -e AWS_ACCESS_KEY_ID=test -e AWS_SECRET_ACCESS_KEY=testtest123 \
   fabiocicerchia/s3-backup-sidecar once
@@ -35,7 +46,7 @@ Then restore it, which is the half that matters:
 
 ```sh
 docker run --rm --network bk -v "$PWD/restored:/restore" \
-  -e RESTIC_REPOSITORY=s3:http://minio:9000/backups \
+  -e RESTIC_REPOSITORY=s3:http://rustfs:9000/backups \
   -e RESTIC_PASSWORD=secret \
   -e AWS_ACCESS_KEY_ID=test -e AWS_SECRET_ACCESS_KEY=testtest123 \
   -e RESTORE_TARGET=/restore \
@@ -147,7 +158,7 @@ Worth doing on a schedule you keep to, not just after an incident.
 ## Clean up the local test
 
 ```sh
-docker rm -f minio && docker network rm bk && rm -rf data restored
+docker rm -f rustfs && docker network rm bk && rm -rf data restored
 ```
 
 ## Development
@@ -155,6 +166,6 @@ docker rm -f minio && docker network rm bk && rm -rf data restored
 ```sh
 make build     # docker build
 make lint      # hadolint + shellcheck on entrypoint.sh and backup.sh
-make test      # backup -> restore -> content verify, against MinIO
+make test      # backup -> restore -> content verify, against RustFS
 make release   # multi-arch buildx push
 ```

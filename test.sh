@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
-# Integration test: full backup + restore round-trip against MinIO, plus the
+# Integration test: full backup + restore round-trip against RustFS, plus the
 # two ways the container is meant to stop on its own.
 set -eu
 IMAGE="${1:?usage: test.sh <image:tag>}"
 
 cleanup() {
-  docker rm -f s3bk-minio >/dev/null 2>&1 || true
+  docker rm -f s3bk-rustfs >/dev/null 2>&1 || true
   docker network rm s3bk-test >/dev/null 2>&1 || true
 }
 fail() { echo "FAIL: $1" >&2; cleanup; exit 1; }
@@ -16,13 +16,19 @@ GUARD=""
 command -v timeout >/dev/null 2>&1 && GUARD="timeout 180"
 
 docker network create s3bk-test >/dev/null
-docker run -d --rm --name s3bk-minio --network s3bk-test \
-  -e MINIO_ROOT_USER=test -e MINIO_ROOT_PASSWORD=testtest123 \
-  minio/minio server /data >/dev/null
+docker run -d --rm --name s3bk-rustfs --network s3bk-test \
+  -e RUSTFS_ACCESS_KEY=test -e RUSTFS_SECRET_KEY=testtest123 \
+  rustfs/rustfs:1.0.3@sha256:9ca9559533b537d10482fe923288b676ad08f92a7069d9a17327fbae3cab688b /data >/dev/null
 sleep 3
 
 S3_ENV="-e AWS_ACCESS_KEY_ID=test -e AWS_SECRET_ACCESS_KEY=testtest123 \
-  -e RESTIC_REPOSITORY=s3:http://s3bk-minio:9000/backups -e RESTIC_PASSWORD=secret"
+  -e RESTIC_REPOSITORY=s3:http://s3bk-rustfs:9000/backups -e RESTIC_PASSWORD=secret"
+
+# restic retries a missing bucket for ~14 minutes before creating it; `init`
+# creates it at once, as a real deployment's bucket already exists.
+# shellcheck disable=SC2086
+docker run --rm --network s3bk-test --entrypoint restic $S3_ENV "$IMAGE" init >/dev/null \
+  || fail "restic init against the S3 server"
 
 # shellcheck disable=SC2086  # S3_ENV is a deliberate word-split argument list
 docker run --rm --network s3bk-test --entrypoint sh $S3_ENV \

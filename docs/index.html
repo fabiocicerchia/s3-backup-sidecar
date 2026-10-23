@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>s3-backup-sidecar — restic backup sidecar with cron built in, configured entirely by env vars.</title>
-<meta name="description" content="Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 or anything restic/rclone speaks. Tested with a real backup-and-restore round-trip against MinIO.">
+<meta name="description" content="Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 or anything restic/rclone speaks. Tested with a real backup-and-restore round-trip against RustFS.">
 <!-- The palette lives in the docs theme, so the splash and /docs/ cannot drift
      apart. The path is relative to the *deployed* layout: splash at /, rendered
      docs at /docs/. -->
@@ -51,7 +51,7 @@ footer{margin-top:2.2rem;color:#4d6480;font-size:.82rem}
   <p class="desc">
     Mount your data volume, set four env vars, get scheduled, encrypted, deduplicated, retention-managed backups to S3 —
     or anything restic and rclone speak. Everyone reinvents this container; this one is tested with a real backup →
-    restore → content-verify round-trip against MinIO.
+    restore → content-verify round-trip against RustFS.
   </p>
   <div class="install-label">Run</div>
   <pre><code>docker run -d \
