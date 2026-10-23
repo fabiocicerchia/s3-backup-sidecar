@@ -100,5 +100,5 @@ which side of `forget --prune` it belongs on, and make sure a failure in it
 stops the run rather than being swallowed.
 
 `make test` is the check that matters: it runs a real backup and a real restore
-against MinIO and compares the file contents. A backup tool that is only tested
+against RustFS and compares the file contents. A backup tool that is only tested
 on the write path is untested.

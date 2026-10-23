@@ -1,6 +1,6 @@
 # Basic Example
 
-What it shows: a scheduled backup running against MinIO, and the restore that
+What it shows: a scheduled backup running against RustFS, and the restore that
 proves it worked. The restore is the part worth running.
 
 ## Run

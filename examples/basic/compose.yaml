@@ -1,26 +1,38 @@
-# A scheduled backup to a local MinIO, and a one-shot restore profile.
+# A scheduled backup to a local RustFS, and a one-shot restore profile.
 #
-# MinIO stands in for S3 so the whole round trip runs on a laptop. Swapping
+# RustFS, an S3-compatible server, stands in for S3 so the whole round trip runs on a laptop. Swapping
 # RESTIC_REPOSITORY for a real bucket URL and dropping the AWS_* variables
 # (IRSA / instance profile) is the only change needed for the real thing.
 x-restic: &restic
-  RESTIC_REPOSITORY: "s3:http://minio:9000/backups"
+  RESTIC_REPOSITORY: "s3:http://rustfs:9000/backups"
   RESTIC_PASSWORD: "not-a-real-password"
   AWS_ACCESS_KEY_ID: "test"
   AWS_SECRET_ACCESS_KEY: "testtest123"
 
 services:
-  minio:
-    image: minio/minio
-    command: server /data
+  rustfs:
+    image: rustfs/rustfs:1.0.3@sha256:9ca9559533b537d10482fe923288b676ad08f92a7069d9a17327fbae3cab688b
+    command: /data
     environment:
-      MINIO_ROOT_USER: "test"
-      MINIO_ROOT_PASSWORD: "testtest123"
+      RUSTFS_ACCESS_KEY: "test"
+      RUSTFS_SECRET_KEY: "testtest123"
     # Bounded so the example is copy-pasteable into somewhere real. An
     # unbounded container is scheduled without guardrails and pushes nodes
     # towards over-provisioning.
     mem_limit: 256m
     cpus: 0.5
+
+  # restic retries a missing bucket for ~14 minutes before creating it, so the
+  # repository is created up front; on a second `up` init fails and cat succeeds.
+  init:
+    image: fabiocicerchia/s3-backup-sidecar
+    entrypoint: ["sh", "-c", "restic init || restic cat config >/dev/null"]
+    mem_limit: 256m
+    cpus: 0.5
+    environment:
+      <<: *restic
+    depends_on:
+      - rustfs
 
   backup:
     image: fabiocicerchia/s3-backup-sidecar
@@ -36,7 +48,8 @@ services:
       # access to the data it protects buys nothing.
       - ./data:/data:ro
     depends_on:
-      - minio
+      init:
+        condition: service_completed_successfully
 
   # Not started by `up`; run it explicitly with --profile restore.
   restore:
@@ -49,4 +62,4 @@ services:
     volumes:
       - ./restored:/restore
     depends_on:
-      - minio
+      - rustfs
