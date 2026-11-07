@@ -1,0 +1,212 @@
+{
+ "excluded": {
+  "chart/check": [
+   {
+    "candidate": "Helm runs inside the pinned alpine/helm:3.16.2 container instead of a local helm binary",
+    "covered_by": "",
+    "reason": "TECH_DEVTOOLING",
+    "source": "chart/check.sh#helm"
+   },
+   {
+    "candidate": "The script changes into its own directory so it works from any working directory",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "chart/check.sh#helm"
+   }
+  ]
+ },
+ "lifted": {
+  "chart/check": []
+ },
+ "retired": [],
+ "scenarios": {
+  "chart.kubernetes-deployment.chart-validation.001": {
+   "file": "chart/specs/kubernetes-deployment/chart-validation/chart-validation.feature",
+   "fingerprint": "74d90975d59c",
+   "human": false,
+   "rule": "kubernetes-deployment.chart-validation.default-render-passes",
+   "source": "chart/check.sh#helm",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "chart.kubernetes-deployment.chart-validation.002": {
+   "file": "chart/specs/kubernetes-deployment/chart-validation/chart-validation.feature",
+   "fingerprint": "74d90975d59c",
+   "human": false,
+   "rule": "kubernetes-deployment.chart-validation.broken-chart-fails",
+   "source": "chart/check.sh#helm",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  }
+ },
+ "taxonomy": {
+  "domains": [
+   {
+    "areas": [
+     {
+      "description": "Running backups on a cron schedule from the built-in scheduler, or once per run for CronJobs and CI.",
+      "slug": "scheduling",
+      "title": "Scheduling"
+     },
+     {
+      "description": "Running a user command such as a database dump before the snapshot is taken.",
+      "slug": "pre-backup-hooks",
+      "title": "Pre-backup hooks"
+     },
+     {
+      "description": "Creating encrypted, deduplicated restic snapshots of the configured data paths.",
+      "slug": "snapshots",
+      "title": "Snapshots"
+     },
+     {
+      "description": "Pruning old snapshots according to the retention policy (7 daily, 4 weekly, 6 monthly by default).",
+      "slug": "retention",
+      "title": "Retention"
+     }
+    ],
+    "description": "Taking encrypted, deduplicated snapshots of a mounted data volume and sending them to a remote repository.",
+    "slug": "backup",
+    "title": "Backup"
+   },
+   {
+    "areas": [
+     {
+      "description": "Restoring the latest snapshot into a target directory in restore mode.",
+      "slug": "disaster-recovery",
+      "title": "Disaster recovery"
+     },
+     {
+      "description": "Checking the repository and reading back a sample of data after each run.",
+      "slug": "integrity-checks",
+      "title": "Integrity checks"
+     }
+    ],
+    "description": "Getting data back and proving the backups can actually be restored.",
+    "slug": "restore",
+    "title": "Restore & Verification"
+   },
+   {
+    "areas": [
+     {
+      "description": "Connecting to S3 or any other restic-supported repository and initialising it when missing.",
+      "slug": "repositories",
+      "title": "Repositories"
+     },
+     {
+      "description": "Supplying the repository password and cloud keys from the environment or secrets without ever logging them.",
+      "slug": "credentials",
+      "title": "Credentials"
+     },
+     {
+      "description": "Using the bundled rclone for non-restic sync jobs and exotic remotes.",
+      "slug": "rclone-sync",
+      "title": "Rclone sync"
+     }
+    ],
+    "description": "Where backups go and how the sidecar reaches it.",
+    "slug": "storage-targets",
+    "title": "Storage Targets"
+   },
+   {
+    "areas": [
+     {
+      "description": "The env vars that select paths, schedule, retention, verification and other behaviour.",
+      "slug": "environment-settings",
+      "title": "Environment settings"
+     },
+     {
+      "description": "Choosing between cron sidecar, one-shot and restore modes from a single image.",
+      "slug": "run-modes",
+      "title": "Run modes"
+     }
+    ],
+    "description": "Setting up the sidecar entirely through environment variables, with no config file or rebuild.",
+    "slug": "configuration",
+    "title": "Configuration"
+   },
+   {
+    "areas": [
+     {
+      "description": "Failing fast at startup when the repository is unreachable or not writable.",
+      "slug": "startup-checks",
+      "title": "Startup checks"
+     },
+     {
+      "description": "Exiting non-zero and logging the reason on every failure path.",
+      "slug": "failure-reporting",
+      "title": "Failure reporting"
+     },
+     {
+      "description": "Pinging a dead-man-switch URL after each successful backup.",
+      "slug": "heartbeats",
+      "title": "Heartbeats"
+     }
+    ],
+    "description": "Making sure failures are loud and successes are visible.",
+    "slug": "reliability",
+    "title": "Reliability & Monitoring"
+   },
+   {
+    "areas": [
+     {
+      "description": "Deploying as a long-running Deployment or as a Kubernetes CronJob with its job settings.",
+      "slug": "workload",
+      "title": "Workload"
+     },
+     {
+      "description": "Mounting the data volume to back up, either an existing claim or a newly created one, plus extra volumes.",
+      "slug": "volumes",
+      "title": "Volumes"
+     },
+     {
+      "description": "Optionally exposing the container through a Service and Ingress.",
+      "slug": "networking",
+      "title": "Networking"
+     },
+     {
+      "description": "Running as non-root with a read-only filesystem, dropped capabilities, a service account and optional RBAC.",
+      "slug": "security-hardening",
+      "title": "Security hardening"
+     },
+     {
+      "description": "Linting the Helm chart and rendering it with default values to catch template errors.",
+      "slug": "chart-validation",
+      "title": "Chart validation"
+     }
+    ],
+    "description": "Installing and running the sidecar on Kubernetes through the bundled Helm chart.",
+    "slug": "kubernetes-deployment",
+    "title": "Kubernetes Deployment"
+   },
+   {
+    "areas": [
+     {
+      "description": "Building the container image locally with pinned tool versions and correct volume ownership.",
+      "slug": "image-build",
+      "title": "Image build"
+     },
+     {
+      "description": "Smoke tests and a real backup, restore and content-verify round trip against the built image.",
+      "slug": "testing",
+      "title": "Testing"
+     },
+     {
+      "description": "Linting the Dockerfile and shell scripts and running the pre-commit hooks.",
+      "slug": "linting",
+      "title": "Linting"
+     },
+     {
+      "description": "Pushing versioned multi-arch images and generating the changelog from commits.",
+      "slug": "release",
+      "title": "Release"
+     }
+    ],
+    "description": "Building, testing and releasing the image.",
+    "slug": "developer-tooling",
+    "title": "Developer Tooling"
+   }
+  ]
+ }
+}

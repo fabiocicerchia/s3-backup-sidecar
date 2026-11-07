@@ -1,0 +1,829 @@
+{
+ "excluded": {
+  "docs/stylesheets": [
+   {
+    "candidate": "Translucent blurred header with hairline divider and shadow on scroll",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "docs/stylesheets/extra.css#.md-header"
+   },
+   {
+    "candidate": "Heading weights, letter-spacing and tab link opacity",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#.md-typeset h1"
+   },
+   {
+    "candidate": "Rounded bordered code blocks",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#.md-typeset .highlight"
+   },
+   {
+    "candidate": "Tables styled as cards with uppercase headers",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#.md-typeset table:not([class])"
+   },
+   {
+    "candidate": "Bold nav title and active nav link",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#.md-nav__title"
+   },
+   {
+    "candidate": "Footer background and muted link colour",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#.md-footer-meta"
+   },
+   {
+    "candidate": "Smooth scrolling for in-page anchors",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#html"
+   },
+   {
+    "candidate": "Adjacent hero buttons spaced apart",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "docs/stylesheets/extra.css#.md-typeset .hero .md-button + .md-button"
+   }
+  ],
+  "s3-backup-sidecar/backup": [
+   {
+    "candidate": "Repository password and cloud credentials are read by restic itself from the environment, with a missing password failing in restic",
+    "covered_by": "",
+    "reason": "UNVERIFIABLE",
+    "source": "backup.sh#RESTIC_PASSWORD"
+   },
+   {
+    "candidate": "Heartbeat request uses a 10-second timeout and discards the body",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "backup.sh#HEARTBEAT_URL"
+   },
+   {
+    "candidate": "Verification reads exactly a 5% subset per run",
+    "covered_by": "retention.verify.opt-in-read-subset",
+    "reason": "DUPLICATE_OF",
+    "source": "backup.sh#VERIFY"
+   },
+   {
+    "candidate": "Plain-text 'backup: ...' progress lines for each step",
+    "covered_by": "",
+    "reason": "TRIVIAL",
+    "source": "backup.sh"
+   },
+   {
+    "candidate": "Backup paths are word-split so paths with spaces cannot be named",
+    "covered_by": "backups.sources.default-data-path",
+    "reason": "DUPLICATE_OF",
+    "source": "backup.sh#BACKUP_PATHS"
+   },
+   {
+    "candidate": "Init attempted on any config-read failure (wrong password, unreachable store)",
+    "covered_by": "backups.repository.created-on-first-use",
+    "reason": "DUPLICATE_OF",
+    "source": "backup.sh#restic cat config"
+   }
+  ],
+  "s3-backup-sidecar/dockerfile": [
+   {
+    "candidate": "Tool versions pinned via ARG with base image pinned by digest",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Dockerfile#ARG RESTIC_VERSION"
+   },
+   {
+    "candidate": "pipefail makes a failed restic download fail the build instead of shipping an empty binary",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Dockerfile#SHELL [\"/bin/ash\", \"-o\", \"pipefail\", \"-c\"]"
+   },
+   {
+    "candidate": "Per-architecture binary download via TARGETARCH (defaults to amd64)",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Dockerfile#ARG TARGETARCH=amd64"
+   },
+   {
+    "candidate": "Two-stage build (fetch stage, then a slim runtime stage)",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Dockerfile#FROM alpine AS fetch"
+   },
+   {
+    "candidate": "supercronic bundled as the cron scheduler",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "Dockerfile#COPY --from=fetch /restic /rclone /supercronic /usr/local/bin/"
+   },
+   {
+    "candidate": "curl and ca-certificates installed in the runtime image (used for heartbeat pings and TLS)",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "Dockerfile#RUN apk add --no-cache ca-certificates tini tzdata curl"
+   },
+   {
+    "candidate": "backup.sh and entrypoint.sh installed on the PATH; run-mode dispatch belongs to the entrypoint module",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "Dockerfile#COPY backup.sh entrypoint.sh /usr/local/bin/"
+   },
+   {
+    "candidate": "Bind-mounted /backups that is not writable is refused at startup with guidance",
+    "covered_by": "",
+    "reason": "UNVERIFIABLE",
+    "source": "entrypoint.sh (not this module)"
+   },
+   {
+    "candidate": "The image declares its Apache-2.0 licence and ships its notice",
+    "covered_by": "",
+    "reason": "UNVERIFIABLE",
+    "source": "Dockerfile#LABEL org.opencontainers.image.licenses"
+   }
+  ],
+  "s3-backup-sidecar/entrypoint": [
+   {
+    "candidate": "Schedule is written to /tmp/crontab and handed to supercronic",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "entrypoint.sh#cron"
+   },
+   {
+    "candidate": "Scheduler runs with -json so its output is structured JSON",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "entrypoint.sh#cron"
+   },
+   {
+    "candidate": "Each mode replaces the shell via exec so signals reach the child",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "entrypoint.sh#cron"
+   },
+   {
+    "candidate": "Preflight probes with `restic cat config` before trying `restic init`",
+    "covered_by": "",
+    "reason": "INTERNAL_MECHANISM",
+    "source": "entrypoint.sh#cron"
+   },
+   {
+    "candidate": "Unusable-repository hint about uid 10001 volumes",
+    "covered_by": "scheduling.preflight.unusable-repository-refused",
+    "reason": "DUPLICATE_OF",
+    "source": "entrypoint.sh#cron"
+   },
+   {
+    "candidate": "Fresh named volume at /backups is writable by uid 10001",
+    "covered_by": "",
+    "reason": "UNVERIFIABLE",
+    "source": "test.sh"
+   },
+   {
+    "candidate": "Explicit `cron` argument behaves like no argument",
+    "covered_by": "scheduling.cron.schedule-from-env-with-daily-default",
+    "reason": "DUPLICATE_OF",
+    "source": "entrypoint.sh#cron"
+   }
+  ],
+  "s3-backup-sidecar/makefile": [
+   {
+    "candidate": "`make` with no target lists every target with its one-line description",
+    "covered_by": "",
+    "reason": "TECH_DEVTOOLING",
+    "source": "Makefile#help"
+   },
+   {
+    "candidate": "`make build` builds the image tagged <IMAGE>:<version from version.txt>",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Makefile#build"
+   },
+   {
+    "candidate": "`make lint` runs every pre-commit hook on every file",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Makefile#lint"
+   },
+   {
+    "candidate": "`make test` builds the image, then runs test.sh against that tag",
+    "covered_by": "",
+    "reason": "TECH_DEVTOOLING",
+    "source": "Makefile#test"
+   },
+   {
+    "candidate": "`make setup` installs the pre-commit hook",
+    "covered_by": "",
+    "reason": "TECH_DEVTOOLING",
+    "source": "Makefile#setup"
+   },
+   {
+    "candidate": "`make install` pulls the published image at the version in version.txt",
+    "covered_by": "",
+    "reason": "TECH_DEVTOOLING",
+    "source": "Makefile#install"
+   },
+   {
+    "candidate": "`make run` builds the image and runs it with ARGS as the container arguments",
+    "covered_by": "",
+    "reason": "TECH_DEVTOOLING",
+    "source": "Makefile#run"
+   },
+   {
+    "candidate": "`make format` runs the whitespace, end-of-file and line-ending fixers and ignores their non-zero exits",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Makefile#format"
+   },
+   {
+    "candidate": "`make analyze` stops with exit 69 and an install link when trivy is missing, otherwise scans the tree for CRITICAL/HIGH vulnerabilities, misconfigurations and secrets",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Makefile#analyze"
+   },
+   {
+    "candidate": "`make push` builds the image and pushes the version tag",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Makefile#push"
+   },
+   {
+    "candidate": "`make release` builds amd64+arm64 with buildx and pushes the version and latest tags. The images operators actually pull are published by .github/workflows/publish.yml, so that tag and architecture promise belongs to the CI module, not here",
+    "covered_by": "",
+    "reason": "TECH_BUILD",
+    "source": "Makefile#release"
+   }
+  ]
+ },
+ "lifted": {
+  "docs/stylesheets": [],
+  "s3-backup-sidecar/backup": [],
+  "s3-backup-sidecar/dockerfile": [
+   {
+    "from_source": "Dockerfile#USER 10001",
+    "rule": "The sidecar never runs as root: every process runs as uid 10001"
+   },
+   {
+    "from_source": "Dockerfile#RUN mkdir -p /backups && chown 10001:10001 /backups",
+    "rule": "A fresh named volume at /backups can be written to, so the first backup does not fail with a permission error"
+   }
+  ],
+  "s3-backup-sidecar/entrypoint": [],
+  "s3-backup-sidecar/makefile": []
+ },
+ "retired": [],
+ "scenarios": {
+  "backups.backup-sources.001": {
+   "file": "specs/backups/backup-sources/taking-a-backup.feature",
+   "fingerprint": "57113faf05f2",
+   "human": false,
+   "rule": "backups.sources.default-data-path",
+   "source": "backup.sh#BACKUP_PATHS",
+   "status": "verified",
+   "test": "test.sh#backup/restore round-trip",
+   "tests": [
+    "test.sh#backup/restore round-trip"
+   ]
+  },
+  "backups.backup-sources.002": {
+   "file": "specs/backups/backup-sources/taking-a-backup.feature",
+   "fingerprint": "69d5685c6d12",
+   "human": false,
+   "rule": "backups.repository.created-on-first-use",
+   "source": "backup.sh#restic cat config",
+   "status": "verified",
+   "test": "test.sh#a fresh named volume is not writable by uid 10001",
+   "tests": [
+    "test.sh#a fresh named volume is not writable by uid 10001"
+   ]
+  },
+  "backups.backup-sources.003": {
+   "file": "specs/backups/backup-sources/taking-a-backup.feature",
+   "fingerprint": "15d3fb9ae7a2",
+   "human": false,
+   "rule": "backups.tags.snapshot-tagged",
+   "source": "backup.sh#BACKUP_TAGS",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "backups.backup-sources.004": {
+   "file": "specs/backups/backup-sources/taking-a-backup.feature",
+   "fingerprint": "f397051da4a3",
+   "human": false,
+   "rule": "backups.pre-command.runs-before-snapshot",
+   "source": "backup.sh#PRE_COMMAND",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "backups.backup-sources.005": {
+   "file": "specs/backups/backup-sources/taking-a-backup.feature",
+   "fingerprint": "f397051da4a3",
+   "human": false,
+   "rule": "backups.pre-command.failure-aborts-run",
+   "source": "backup.sh#PRE_COMMAND",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "container-runtime.non-root-volumes.001": {
+   "file": "specs/container-runtime/non-root-volumes/container-image-runtime.feature",
+   "fingerprint": "1d8a57dbd942",
+   "human": false,
+   "rule": "container.runtime.runs-as-non-root",
+   "source": "Dockerfile#USER 10001",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "container-runtime.non-root-volumes.002": {
+   "file": "specs/container-runtime/non-root-volumes/container-image-runtime.feature",
+   "fingerprint": "c3bcd92b659c",
+   "human": false,
+   "rule": "container.runtime.fresh-named-volume-writable",
+   "source": "Dockerfile#RUN mkdir -p /backups && chown 10001:10001 /backups",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "container-runtime.non-root-volumes.003": {
+   "file": "specs/container-runtime/non-root-volumes/container-image-runtime.feature",
+   "fingerprint": "d30bb541c3eb",
+   "human": false,
+   "rule": "container.tools.restic-rclone-bundled",
+   "source": "Dockerfile#COPY --from=fetch /restic /rclone /supercronic /usr/local/bin/",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "container-runtime.non-root-volumes.004": {
+   "file": "specs/container-runtime/non-root-volumes/container-image-runtime.feature",
+   "fingerprint": "a36becc71130",
+   "human": false,
+   "rule": "container.runtime.stops-promptly-on-signal",
+   "source": "Dockerfile#ENTRYPOINT [\"/sbin/tini\", \"--\", \"/usr/local/bin/entrypoint.sh\"]",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "container-runtime.non-root-volumes.005": {
+   "file": "specs/container-runtime/non-root-volumes/container-image-runtime.feature",
+   "fingerprint": "e45c8ded804e",
+   "human": false,
+   "rule": "container.runtime.timezone-honoured",
+   "source": "Dockerfile#RUN apk add --no-cache ca-certificates tini tzdata curl",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "documentation.page-components.001": {
+   "file": "specs/documentation/page-components/docs-page-components.feature",
+   "fingerprint": "4c93968d74af",
+   "human": false,
+   "rule": "docs.components.no-network-assets",
+   "source": "docs/stylesheets/extra.css#:root",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "documentation.page-components.002": {
+   "file": "specs/documentation/page-components/docs-page-components.feature",
+   "fingerprint": "795e359e9240",
+   "human": false,
+   "rule": "docs.components.hero-and-primary-buttons",
+   "source": "docs/stylesheets/extra.css#.md-typeset .hero",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "documentation.page-components.003": {
+   "file": "specs/documentation/page-components/docs-page-components.feature",
+   "fingerprint": "9606b3669194",
+   "human": false,
+   "rule": "docs.components.feature-card-hover",
+   "source": "docs/stylesheets/extra.css#.md-typeset .grid.cards > ul > li",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "documentation.theme-branding.001": {
+   "file": "specs/documentation/theme-branding/docs-theme-branding.feature",
+   "fingerprint": "4c93968d74af",
+   "human": false,
+   "rule": "docs.theme.single-accent-palette",
+   "source": "docs/stylesheets/extra.css#:root",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "documentation.theme-branding.002": {
+   "file": "specs/documentation/theme-branding/docs-theme-branding.feature",
+   "fingerprint": "433084a194b6",
+   "human": false,
+   "rule": "docs.theme.links-legible-in-both-schemes",
+   "source": "docs/stylesheets/extra.css#[data-md-color-scheme=\"slate\"]",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "documentation.theme-branding.003": {
+   "file": "specs/documentation/theme-branding/docs-theme-branding.feature",
+   "fingerprint": "c702704e5aae",
+   "human": false,
+   "rule": "docs.theme.no-stand-in-logo",
+   "source": "docs/stylesheets/extra.css#.md-header__button.md-logo",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "observability.heartbeat.001": {
+   "file": "specs/observability/heartbeat/backup-run-monitoring.feature",
+   "fingerprint": "defed8e1dfb6",
+   "human": false,
+   "rule": "observability.heartbeat.pinged-after-success",
+   "source": "backup.sh#HEARTBEAT_URL",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "observability.heartbeat.002": {
+   "file": "specs/observability/heartbeat/backup-run-monitoring.feature",
+   "fingerprint": "defed8e1dfb6",
+   "human": false,
+   "rule": "observability.heartbeat.failure-non-fatal",
+   "source": "backup.sh#HEARTBEAT_URL",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "observability.heartbeat.003": {
+   "file": "specs/observability/heartbeat/backup-run-monitoring.feature",
+   "fingerprint": "5d0cd25d03a9",
+   "human": false,
+   "rule": "observability.failure.repository-required",
+   "source": "backup.sh#RESTIC_REPOSITORY",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "observability.heartbeat.004": {
+   "file": "specs/observability/heartbeat/backup-run-monitoring.feature",
+   "fingerprint": "f397051da4a3",
+   "human": false,
+   "rule": "security.logging.pre-command-not-echoed",
+   "source": "backup.sh#PRE_COMMAND",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "retention-recovery.restore.001": {
+   "file": "specs/retention-recovery/restore/restoring-latest-snapshot.feature",
+   "fingerprint": "7c473fb8a6eb",
+   "human": false,
+   "rule": "recovery.restore.latest-into-target",
+   "source": "entrypoint.sh#restore",
+   "status": "verified",
+   "test": "test.sh#backup/restore round-trip",
+   "tests": [
+    "test.sh#backup/restore round-trip"
+   ]
+  },
+  "retention-recovery.restore.002": {
+   "file": "specs/retention-recovery/restore/restoring-latest-snapshot.feature",
+   "fingerprint": "7c473fb8a6eb",
+   "human": false,
+   "rule": "recovery.restore.target-required",
+   "source": "entrypoint.sh#restore",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "retention-recovery.retention-policy.001": {
+   "file": "specs/retention-recovery/retention-policy/retention-and-verification.feature",
+   "fingerprint": "74d426ae4f75",
+   "human": false,
+   "rule": "retention.policy.keep-policy-applied-each-run",
+   "source": "backup.sh#RETENTION_ARGS",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "retention-recovery.retention-policy.002": {
+   "file": "specs/retention-recovery/retention-policy/retention-and-verification.feature",
+   "fingerprint": "f28fbf34d30f",
+   "human": false,
+   "rule": "retention.policy.only-after-successful-backup",
+   "source": "backup.sh#restic forget",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "retention-recovery.retention-policy.003": {
+   "file": "specs/retention-recovery/retention-policy/retention-and-verification.feature",
+   "fingerprint": "f5dc0111052c",
+   "human": false,
+   "rule": "retention.verify.opt-in-read-subset",
+   "source": "backup.sh#VERIFY",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "retention-recovery.retention-policy.004": {
+   "file": "specs/retention-recovery/retention-policy/retention-and-verification.feature",
+   "fingerprint": "f5dc0111052c",
+   "human": false,
+   "rule": "retention.verify.failure-fails-run",
+   "source": "backup.sh#restic check",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.command-passthrough.001": {
+   "file": "specs/scheduling/command-passthrough/command-passthrough.feature",
+   "fingerprint": "061c80ac3172",
+   "human": false,
+   "rule": "scheduling.passthrough.unknown-argument-runs-as-command",
+   "source": "entrypoint.sh#cron",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.cron-schedule.001": {
+   "file": "specs/scheduling/cron-schedule/scheduled-backups.feature",
+   "fingerprint": "061c80ac3172",
+   "human": false,
+   "rule": "scheduling.cron.schedule-from-env-with-daily-default",
+   "source": "entrypoint.sh#cron",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.cron-schedule.002": {
+   "file": "specs/scheduling/cron-schedule/scheduled-backups.feature",
+   "fingerprint": "061c80ac3172",
+   "human": false,
+   "rule": "scheduling.cron.repository-required",
+   "source": "entrypoint.sh#cron",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.one-shot-runs.001": {
+   "file": "specs/scheduling/one-shot-runs/one-shot-backups.feature",
+   "fingerprint": "f7fbfc4e37ee",
+   "human": false,
+   "rule": "scheduling.one-shot.selected-by-argument-or-run-once",
+   "source": "entrypoint.sh#once",
+   "status": "verified",
+   "test": "test.sh#RUN_ONCE=true did not take one backup and exit",
+   "tests": [
+    "test.sh#RUN_ONCE=true did not take one backup and exit"
+   ]
+  },
+  "scheduling.one-shot-runs.002": {
+   "file": "specs/scheduling/one-shot-runs/one-shot-backups.feature",
+   "fingerprint": "f7fbfc4e37ee",
+   "human": false,
+   "rule": "scheduling.one-shot.run-once-only-literal-true",
+   "source": "entrypoint.sh#once",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.one-shot-runs.003": {
+   "file": "specs/scheduling/one-shot-runs/one-shot-backups.feature",
+   "fingerprint": "f7fbfc4e37ee",
+   "human": false,
+   "rule": "scheduling.one-shot.explicit-mode-overrides-run-once",
+   "source": "entrypoint.sh#once",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.startup-preflight.001": {
+   "file": "specs/scheduling/startup-preflight/startup-preflight.feature",
+   "fingerprint": "061c80ac3172",
+   "human": false,
+   "rule": "scheduling.preflight.repository-created-on-first-use",
+   "source": "entrypoint.sh#cron",
+   "status": "inferred",
+   "test": "",
+   "tests": []
+  },
+  "scheduling.startup-preflight.002": {
+   "file": "specs/scheduling/startup-preflight/startup-preflight.feature",
+   "fingerprint": "061c80ac3172",
+   "human": false,
+   "rule": "scheduling.preflight.unusable-repository-refused",
+   "source": "entrypoint.sh#cron",
+   "status": "verified",
+   "test": "test.sh#cron mode scheduled backups against an unusable repository",
+   "tests": [
+    "test.sh#cron mode scheduled backups against an unusable repository"
+   ]
+  }
+ },
+ "taxonomy": {
+  "domains": [
+   {
+    "areas": [
+     {
+      "description": "Opening the backup repository, or creating it on first use.",
+      "slug": "repository-setup",
+      "title": "Repository setup"
+     },
+     {
+      "description": "Choosing which paths get backed up, defaulting to /data.",
+      "slug": "backup-sources",
+      "title": "Backup sources"
+     },
+     {
+      "description": "Labelling each snapshot with configurable tags so it can be found and filtered later.",
+      "slug": "snapshot-tagging",
+      "title": "Snapshot tagging"
+     },
+     {
+      "description": "Running a user-supplied command such as a database dump before the snapshot is taken.",
+      "slug": "pre-backup-hooks",
+      "title": "Pre-backup hooks"
+     }
+    ],
+    "description": "Taking an encrypted, deduplicated snapshot of the mounted data on every run.",
+    "slug": "backups",
+    "title": "Backups"
+   },
+   {
+    "areas": [
+     {
+      "description": "Removing and pruning old snapshots by a configurable keep-daily/weekly/monthly policy.",
+      "slug": "retention-policy",
+      "title": "Retention policy"
+     },
+     {
+      "description": "Optionally re-reading a sample of the backup data after each run to confirm it is intact.",
+      "slug": "integrity-checks",
+      "title": "Integrity checks"
+     },
+     {
+      "description": "Restoring the latest snapshot into a target directory you choose.",
+      "slug": "restore",
+      "title": "Restore"
+     }
+    ],
+    "description": "Keeping the right snapshots, checking they can be read back, and getting data out again.",
+    "slug": "retention-recovery",
+    "title": "Retention & recovery"
+   },
+   {
+    "areas": [
+     {
+      "description": "Running backups on a configurable cron expression, 03:00 daily by default.",
+      "slug": "cron-schedule",
+      "title": "Cron schedule"
+     },
+     {
+      "description": "Running a single backup and exiting, picked by argument or RUN_ONCE, for Jobs and CI.",
+      "slug": "one-shot-runs",
+      "title": "One-shot runs"
+     },
+     {
+      "description": "Checking at startup that the repository can be reached or created, and refusing to schedule backups that would all fail.",
+      "slug": "startup-preflight",
+      "title": "Startup preflight"
+     },
+     {
+      "description": "Running any other command in the container, such as restic or rclone directly.",
+      "slug": "command-passthrough",
+      "title": "Command passthrough"
+     }
+    ],
+    "description": "When and how the sidecar runs: on a schedule, once, or as some other command.",
+    "slug": "scheduling",
+    "title": "Scheduling & run modes"
+   },
+   {
+    "areas": [
+     {
+      "description": "Sending backups to S3 or any other repository that restic or rclone supports.",
+      "slug": "storage-backends",
+      "title": "Storage backends"
+     },
+     {
+      "description": "Supplying the repository password directly or from a file.",
+      "slug": "encryption-secrets",
+      "title": "Encryption secrets"
+     },
+     {
+      "description": "Signing in to object storage with access keys, IRSA or instance profiles.",
+      "slug": "cloud-credentials",
+      "title": "Cloud credentials"
+     }
+    ],
+    "description": "Where backups go and the secrets used to reach and encrypt them.",
+    "slug": "storage-security",
+    "title": "Storage & credentials"
+   },
+   {
+    "areas": [
+     {
+      "description": "Calling a healthchecks-style URL after a successful run, where a failed ping is logged but does not fail the run.",
+      "slug": "heartbeat",
+      "title": "Heartbeat pings"
+     },
+     {
+      "description": "Logging each step of a run and the scheduler's output as structured JSON.",
+      "slug": "run-logging",
+      "title": "Run logging"
+     },
+     {
+      "description": "Making every failed step or missing required setting exit non-zero with a clear reason.",
+      "slug": "failure-reporting",
+      "title": "Failure reporting"
+     }
+    ],
+    "description": "Showing operators whether backups are working.",
+    "slug": "observability",
+    "title": "Monitoring"
+   },
+   {
+    "areas": [
+     {
+      "description": "Pinned restic, rclone and supercronic binaries, fetched and installed for each architecture.",
+      "slug": "bundled-tools",
+      "title": "Bundled tools"
+     },
+     {
+      "description": "Running as uid 10001 with a pre-owned /backups directory so named volumes can be written to.",
+      "slug": "non-root-volumes",
+      "title": "Non-root user & volumes"
+     },
+     {
+      "description": "Running under tini so signals and child processes are handled properly.",
+      "slug": "process-supervision",
+      "title": "Process supervision"
+     },
+     {
+      "description": "OCI labels, the license notice and the timezone data that ship in the image.",
+      "slug": "image-metadata",
+      "title": "Image metadata & licensing"
+     }
+    ],
+    "description": "The packaged image the sidecar ships as and how it behaves at runtime.",
+    "slug": "container-runtime",
+    "title": "Container image"
+   },
+   {
+    "areas": [
+     {
+      "description": "Building the image, running it locally and pulling the published image.",
+      "slug": "local-build-run",
+      "title": "Local build & run"
+     },
+     {
+      "description": "Linting, auto-formatting and security scanning the tree the same way CI does.",
+      "slug": "quality-gates",
+      "title": "Quality gates"
+     },
+     {
+      "description": "Building the image and running the smoke tests against it.",
+      "slug": "smoke-tests",
+      "title": "Smoke tests"
+     },
+     {
+      "description": "Pushing tagged images and multi-arch release builds with version and latest tags.",
+      "slug": "publishing",
+      "title": "Publishing & release"
+     },
+     {
+      "description": "Installing the pre-commit hook and listing the available make commands.",
+      "slug": "contributor-setup",
+      "title": "Contributor setup"
+     }
+    ],
+    "description": "Building, checking, testing and releasing the image.",
+    "slug": "developer-tooling",
+    "title": "Developer tooling"
+   },
+   {
+    "areas": [
+     {
+      "description": "One accent colour pair, shared by the rendered docs and the splash page, that sets the site's look.",
+      "slug": "theme-branding",
+      "title": "Theme & branding"
+     },
+     {
+      "description": "Hero sections, buttons and feature cards styled locally, with nothing loaded over the network.",
+      "slug": "page-components",
+      "title": "Page components"
+     }
+    ],
+    "description": "How the project's docs and splash page look.",
+    "slug": "documentation",
+    "title": "Documentation site"
+   }
+  ]
+ }
+}
