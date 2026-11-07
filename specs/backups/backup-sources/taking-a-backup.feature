@@ -3,7 +3,7 @@ Feature: Taking a backup
   Lets an operator get a tagged, encrypted snapshot of the chosen paths on every run without a separate setup step, so a fresh deployment starts protecting data immediately.
 
   Background:
-    Given Given the backup repository location and password are configured
+    Given the backup repository location and password are configured
 
   @id:backups.backup-sources.001 @rule:backups.sources.default-data-path @verified @source:backup.sh#BACKUP_PATHS @test:test.sh#backup/restore round-trip
   Scenario Outline: A run backs up /data unless other paths are chosen

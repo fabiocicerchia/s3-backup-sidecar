@@ -4,16 +4,16 @@ Feature: Monitoring backup runs
 
   @id:observability.heartbeat.001 @rule:observability.heartbeat.pinged-after-success @inferred @source:backup.sh#HEARTBEAT_URL
   Scenario Outline: The heartbeat URL is called only after every step of the run succeeded
-    Given HEARTBEAT_URL is "https://hc-ping.example.com/0b6e"
+    Given <heartbeat setting>
     And <run state>
     When the sidecar runs a backup
     Then <heartbeat outcome>
 
     Examples:
-      | run state                      | heartbeat outcome                                                       |
-      | backup and retention succeed   | the heartbeat URL receives one GET and the log ends with "backup: done" |
-      | the backup step fails          | the heartbeat URL is not called and the run exits non-zero              |
-      | no heartbeat URL is configured | no heartbeat is sent and the log ends with "backup: done"               |
+      | heartbeat setting                                   | run state                    | heartbeat outcome                                                       |
+      | HEARTBEAT_URL is "https://hc-ping.example.com/0b6e" | backup and retention succeed | the heartbeat URL receives one GET and the log ends with "backup: done" |
+      | HEARTBEAT_URL is "https://hc-ping.example.com/0b6e" | the backup step fails        | the heartbeat URL is not called and the run exits non-zero              |
+      | no heartbeat URL is configured                      | backup and retention succeed | no heartbeat is sent and the log ends with "backup: done"               |
 
   @id:observability.heartbeat.002 @rule:observability.heartbeat.failure-non-fatal @inferred @source:backup.sh#HEARTBEAT_URL
   Scenario: An unreachable heartbeat endpoint does not fail a successful backup

@@ -18,5 +18,5 @@ Feature: Restoring the latest snapshot
     Given RESTORE_TARGET is not set
     When the operator starts the container with argument restore
     Then the container exits with a non-zero status
-    And the error output reads "RESTORE_TARGET is required for restore"
+    And the error output shows "RESTORE_TARGET is required for restore"
     And nothing is restored

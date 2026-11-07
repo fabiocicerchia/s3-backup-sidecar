@@ -7,7 +7,7 @@ Feature: Taking a single backup and exiting
 
   @id:scheduling.one-shot-runs.001 @rule:scheduling.one-shot.selected-by-argument-or-run-once @verified @source:entrypoint.sh#once @test:test.sh#RUN_ONCE=true did not take one backup and exit
   Scenario Outline: A single backup runs and the container exits when asked by argument or by RUN_ONCE
-    Given the container is started with argument <argument> and RUN_ONCE <run_once>
+    Given the container argument is <argument> and RUN_ONCE is <run_once>
     When the operator starts the container
     Then one backup is taken immediately
     And the container exits with the backup's exit status
@@ -21,7 +21,7 @@ Feature: Taking a single backup and exiting
 
   @id:scheduling.one-shot-runs.002 @rule:scheduling.one-shot.run-once-only-literal-true @inferred @source:entrypoint.sh#once @questionable
   Scenario Outline: RUN_ONCE switches to a single backup only when it is exactly "true"
-    Given the container is started without a mode argument
+    Given no mode argument is given and BACKUP_SCHEDULE is unset
     And RUN_ONCE is <run_once>
     When the operator starts the container
     Then the log shows "s3-backup-sidecar: scheduling backups: 0 3 * * *"

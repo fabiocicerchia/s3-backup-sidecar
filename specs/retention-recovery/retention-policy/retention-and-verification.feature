@@ -3,7 +3,7 @@ Feature: Pruning and verifying backups
   Keeps the repository to a configurable history and optionally proves the stored data can be read back, without ever pruning against a failed run.
 
   Background:
-    Given Given the backup repository holds earlier snapshots
+    Given the backup repository holds earlier snapshots
 
   @id:retention-recovery.retention-policy.001 @rule:retention.policy.keep-policy-applied-each-run @inferred @source:backup.sh#RETENTION_ARGS
   Scenario Outline: Old snapshots are removed and pruned by the keep policy after each backup

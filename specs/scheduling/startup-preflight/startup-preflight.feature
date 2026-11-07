@@ -17,7 +17,7 @@ Feature: Checking the repository before scheduling backups
 
   @id:scheduling.startup-preflight.002 @rule:scheduling.preflight.unusable-repository-refused @verified @source:entrypoint.sh#cron @test:test.sh#cron mode scheduled backups against an unusable repository
   Scenario Outline: The container refuses to schedule backups against a repository it can neither open nor create
-    Given RESTIC_REPOSITORY is "<repository>", which the container can neither open nor create
+    Given RESTIC_REPOSITORY is "<repository>", <why unusable>
     When the operator starts the container
     Then the container exits with status 1
     And the error output reads "s3-backup-sidecar: cannot open or create <repository> — not scheduling backups that would all fail"
@@ -25,6 +25,6 @@ Feature: Checking the repository before scheduling backups
     And no backups are scheduled
 
     Examples:
-      | repository                           |
-      | /nonexistent/nowhere                 |
-      | /backups/repo on a root-owned volume |
+      | repository           | why unusable                                  |
+      | /nonexistent/nowhere | a path uid 10001 cannot create                |
+      | /backups/repo        | on a root-owned volume uid 10001 cannot write |

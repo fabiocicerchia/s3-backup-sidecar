@@ -24,5 +24,5 @@ Feature: Running backups on a schedule
     Given RESTIC_REPOSITORY is not set
     When the operator starts the container
     Then the container exits with a non-zero status
-    And the error output reads "RESTIC_REPOSITORY is required"
+    And the error output shows "RESTIC_REPOSITORY is required"
     And no backups are scheduled

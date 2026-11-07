@@ -10,7 +10,7 @@ Feature: Running the sidecar container image
     Given no user override is set for the container
     When the operator starts the sidecar
     Then every process in the container runs as uid 10001
-    And the container has no root privileges over the data it backs up
+    And no process in the container runs as root
 
   @id:container-runtime.non-root-volumes.002 @rule:container.runtime.fresh-named-volume-writable @inferred @source:Dockerfile#RUN mkdir -p /backups && chown 10001:10001 /backups
   Scenario: A brand-new named volume mounted at /backups can be written to
@@ -22,9 +22,9 @@ Feature: Running the sidecar container image
 
   @id:container-runtime.non-root-volumes.003 @rule:container.tools.restic-rclone-bundled @inferred @source:Dockerfile#COPY --from=fetch /restic /rclone /supercronic /usr/local/bin/
   Scenario Outline: restic and rclone are available inside the image
-    Given no other software is installed in the container
-    When the operator runs <tool> in the sidecar container
-    Then <tool> runs and prints its version
+    Given nothing is installed in the container beyond the image itself
+    When the operator starts the container with arguments "<tool>"
+    Then the tool prints its version
     And the command exits with status 0
 
     Examples:
