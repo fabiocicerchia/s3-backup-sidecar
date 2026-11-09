@@ -1,5 +1,11 @@
 # s3-backup-sidecar
 
+> [!WARNING]
+> **This project is retired** and no longer maintained. If you need something
+> for this, [resticker](https://github.com/djmaze/resticker) runs scheduled
+> restic backups from a Docker container, with retention and checks configured
+> through environment variables. It is a separate project and worth a look.
+
 [![CI](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/ci.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/ci.yml)
 [![Code Quality](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/code-quality.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/code-quality.yml)
 [![Security](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/security.yml/badge.svg)](https://github.com/fabiocicerchia/s3-backup-sidecar/actions/workflows/security.yml)
